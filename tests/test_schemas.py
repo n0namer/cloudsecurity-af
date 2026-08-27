@@ -89,56 +89,38 @@ class TestCloudSecurityInput:
 
 
 class TestReconSchemas:
-    def test_resource_node_defaults(self) -> None:
-        node = ResourceNode(
-            resource_id="aws_s3_bucket.data",
-            resource_type="aws_s3_bucket",
-            name="data",
-            provider="aws",
-            file_path="main.tf",
-        )
-        assert node.config_summary == ""
-        assert node.resource_id == "aws_s3_bucket.data"
-
-    def test_resource_edge(self) -> None:
-        edge = ResourceEdge(
-            source_id="role.admin",
-            target_id="bucket.data",
-            relationship="data_access",
-            description="Admin role can read data bucket",
-        )
-        assert edge.relationship == "data_access"
-
     def test_resource_graph_empty(self) -> None:
         graph = ResourceGraph()
-        assert graph.nodes == []
-        assert graph.edges == []
-        assert graph.clusters == []
+        assert graph.graph_saved_path == ""
+        assert graph.total_nodes == 0
+        assert graph.total_edges == 0
+
+    def test_resource_graph_pointer(self) -> None:
+        graph = ResourceGraph(
+            graph_saved_path="/tmp/graph.json",
+            total_nodes=3,
+            total_edges=2,
+        )
+        assert graph.graph_saved_path == "/tmp/graph.json"
+        assert graph.total_nodes == 3
+        assert graph.total_edges == 2
 
     def test_resource_inventory_empty(self) -> None:
         inv = ResourceInventory()
-        assert inv.resources == []
+        assert inv.inventory_saved_path == ""
+        assert inv.total_resources == 0
         assert inv.iac_type == "terraform"
 
-    def test_resource_inventory_populated(self) -> None:
+    def test_resource_inventory_pointer(self) -> None:
         inv = ResourceInventory(
-            resources=[
-                Resource(
-                    id="aws_s3_bucket.data",
-                    type="aws_s3_bucket",
-                    name="data",
-                    provider="aws",
-                    file_path="main.tf",
-                )
-            ],
-            modules=[Module(name="vpc", source="terraform-aws-modules/vpc/aws")],
-            variables=[Variable(name="region", default="us-east-1")],
-            outputs=[Output(name="bucket_arn")],
-            provider_configs=[ProviderConfig(name="aws", region="us-east-1")],
+            inventory_saved_path="/tmp/inventory.json",
+            total_resources=1,
+            iac_type="terraform",
+            iac_version="1.8.0",
         )
-        assert len(inv.resources) == 1
-        assert inv.resources[0].provider == "aws"
-        assert len(inv.modules) == 1
+        assert inv.inventory_saved_path == "/tmp/inventory.json"
+        assert inv.total_resources == 1
+        assert inv.iac_version == "1.8.0"
 
     def test_drift_report_empty(self) -> None:
         drift = DriftReport()
