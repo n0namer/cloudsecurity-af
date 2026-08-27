@@ -93,7 +93,8 @@ class TestDepthProfile:
         assert DEPTH_CHAIN_LIMITS[DepthProfile.THOROUGH] == 100
 
     def test_prover_caps(self) -> None:
-        assert DEPTH_PROVER_CAPS[DepthProfile.QUICK] == 10
+        assert DEPTH_PROVER_CAPS[DepthProfile.QUICK] == 20
+        assert DEPTH_PROVER_CAPS[DepthProfile.STANDARD] == 30
         assert DEPTH_PROVER_CAPS[DepthProfile.THOROUGH] == 10_000
 
 

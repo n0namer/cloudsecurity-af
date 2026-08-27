@@ -75,7 +75,10 @@ class Resource(BaseModel):
 class ResourceInventory(BaseModel):
     """Inventory pointer from IaC reader harness."""
 
-    inventory_saved_path: str = Field(description="Absolute path to the generated inventory.json file")
+    inventory_saved_path: str = Field(
+        default="",
+        description="Absolute path to the generated inventory.json file",
+    )
     total_resources: int = 0
     iac_type: str = Field(
         default="terraform",
@@ -92,7 +95,10 @@ class ResourceInventory(BaseModel):
 class ResourceGraph(BaseModel):
     """Graph pointer from Resource Graph Builder harness."""
 
-    graph_saved_path: str = Field(description="Absolute path to the generated graph.json file")
+    graph_saved_path: str = Field(
+        default="",
+        description="Absolute path to the generated graph.json file",
+    )
     total_nodes: int = 0
     total_edges: int = 0
 
