@@ -67,7 +67,8 @@ class TestBuildGraphContextForHunter:
         graph_path, inventory_path = _write_inputs(tmp_path)
         summary, _, edges = build_graph_context_for_hunter(graph_path, inventory_path, ["iam", "role"])
         assert "aws_iam_role.admin" in summary
-        assert "aws_s3_bucket.data" not in summary
+        # One-hop connected resources are intentionally included for hunter context.
+        assert "aws_s3_bucket.data" in summary
         assert "aws_iam_role.admin" in edges
 
     def test_network_keywords_filter(self, tmp_path: Path) -> None:
