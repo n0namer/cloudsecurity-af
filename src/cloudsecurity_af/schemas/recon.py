@@ -95,7 +95,10 @@ class ResourceInventory(BaseModel):
 class ResourceGraph(BaseModel):
     """Graph pointer from Resource Graph Builder harness."""
 
-    graph_saved_path: str = Field(description="Absolute path to the generated graph.json file")
+    graph_saved_path: str = Field(
+        default="",
+        description="Absolute path to the generated graph.json file",
+    )
     total_nodes: int = 0
     total_edges: int = 0
 
